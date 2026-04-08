@@ -1,9 +1,12 @@
 package com.tenco.library.service;
 
+import com.tenco.library.dao.AdminDAO;
 import com.tenco.library.dao.BookDAO;
 import com.tenco.library.dao.BorrowDAO;
 import com.tenco.library.dao.StudentDAO;
+import com.tenco.library.dto.Admin;
 import com.tenco.library.dto.Book;
+import com.tenco.library.dto.Borrow;
 import com.tenco.library.dto.Student;
 
 import java.sql.SQLException;
@@ -13,6 +16,8 @@ import java.util.List;
 // VIEW 계층 (화면) -> Service 계층으로 분류 --> Data 계층
 // 뷰 계층에서는 DAO 를 직접 호출하지 말고 항상 Service 를 통해서 접근한다.
 public class LibraryService {
+
+    private final AdminDAO adminDAO = new AdminDAO();
     private final BookDAO bookDAO = new BookDAO();
     private final StudentDAO studentDAO = new StudentDAO();
     private final BorrowDAO borrowDAO = new BorrowDAO();
@@ -72,10 +77,10 @@ public class LibraryService {
      * @throws SQLException
      */
     public Student authenticateStudent(String studentId) throws SQLException {
-       if(studentId == null || studentId.trim().isEmpty()) {
-           throw new SQLException("학번을 입력해주세요");
-       }
-       return studentDAO.authenticateStudent(studentId);
+        if (studentId == null || studentId.trim().isEmpty()) {
+            throw new SQLException("학번을 입력해주세요");
+        }
+        return studentDAO.authenticateStudent(studentId);
     }
 
     // 도서 대출 요청
@@ -87,13 +92,14 @@ public class LibraryService {
      * @throws SQLException
      */
     public void borrowBook(int bookId, int studentId) throws SQLException {
-        if(bookId <= 0 || studentId <= 0) {
+        if (bookId <= 0 || studentId <= 0) {
             throw new SQLException("유효한 도서 ID 와 학생 ID 를 입력해주세요.");
         }
         borrowDAO.borrowBook(bookId, studentId);
     }
 
     // 도서 반납 처리
+
     /**
      *
      * @param bookId
@@ -101,12 +107,27 @@ public class LibraryService {
      * @throws SQLException
      */
     public void returnBook(int bookId, int studentId) throws SQLException {
-        if(bookId <= 0 || studentId <= 0) {
+        if (bookId <= 0 || studentId <= 0) {
             throw new SQLException("유효한 도서ID와 학생 ID를 입력해주세요");
         }
         borrowDAO.returnBook(bookId, studentId);
     }
 
-    // TODO 관리자 기능 추가 예정
+    public List<Borrow> getBorrowedBooks() throws SQLException {
+        return borrowDAO.getBorrowedBooks();
+    }
+
+    // 관리자 서비스 기능 추가
+    public Admin authenticateAdmin(String adminId, String password) throws SQLException {
+
+        if (adminId == null || adminId.trim().isEmpty()) {
+            throw new SQLException("관리자 ID를 입력하세요");
+        }
+        if (password == null || password.trim().isEmpty()) {
+            throw new SQLException("관리자 password 를 입력하세요");
+        }
+
+        return adminDAO.authenticateAdmin(adminId, password);
+    }
 
 }
