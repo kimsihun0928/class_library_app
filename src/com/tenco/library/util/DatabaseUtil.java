@@ -12,25 +12,6 @@ public class DatabaseUtil {
 
     // 새로운 DB 연결 객체를 반환합니다.
     public static Connection getConnection() throws SQLException {
-        // 재미삼아 효과 만들어보기
-        Thread thread = new Thread(() -> {
-            System.out.print("Connecting to database ");
-            for (int i = 0; i < 5; i++) {
-                System.out.print(".");
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
         Connection connection = DriverManager.getConnection(URL,DB_USER,PASSWORD);
         System.out.println();

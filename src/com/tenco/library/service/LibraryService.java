@@ -52,7 +52,7 @@ public class LibraryService {
         if (student.getName() == null || student.getName().trim().isEmpty()) {
             throw new SQLException("학생의 이름은 필수 항목입니다.");
         }
-        if (student.getStudentId() == null || student.getStudentId().trim().isEmpty() {
+        if (student.getStudentId() == null || student.getStudentId().trim().isEmpty()) {
             throw new SQLException("학생의 학번은 필수 항목입니다.");
         }
         studentDAO.addStudent(student);
