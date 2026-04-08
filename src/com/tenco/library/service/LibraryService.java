@@ -4,6 +4,7 @@ import com.tenco.library.dao.BookDAO;
 import com.tenco.library.dao.BorrowDAO;
 import com.tenco.library.dao.StudentDAO;
 import com.tenco.library.dto.Book;
+import com.tenco.library.dto.Borrow;
 import com.tenco.library.dto.Student;
 
 import java.sql.SQLException;
@@ -105,6 +106,10 @@ public class LibraryService {
             throw new SQLException("유효한 도서ID와 학생 ID를 입력해주세요");
         }
         borrowDAO.returnBook(bookId, studentId);
+    }
+
+public List<Borrow> getBorrowedBooks() throws SQLException{
+        return borrowDAO.getBorrowedBooks();
     }
 
     // TODO 관리자 기능 추가 예정
